@@ -3,7 +3,7 @@
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
-    "rxjs-practice": {
+    "Simple-Courses-App": {
       "projectType": "application",
       "schematics": {
         "@schematics/angular:component": {
@@ -17,7 +17,7 @@
         "build": {
           "builder": "@angular-devkit/build-angular:application",
           "options": {
-            "outputPath": "dist/rxjs-practice",
+            "outputPath": "dist/Simple-Courses-App",
             "index": "src/index.html",
             "browser": "src/main.ts",
             "polyfills": [
@@ -63,10 +63,10 @@
           "builder": "@angular-devkit/build-angular:dev-server",
           "configurations": {
             "production": {
-              "buildTarget": "rxjs-practice:build:production"
+              "buildTarget": "Simple-Courses-App:build:production"
             },
             "development": {
-              "buildTarget": "rxjs-practice:build:development"
+              "buildTarget": "Simple-Courses-App:build:development"
             }
           },
           "defaultConfiguration": "development"
@@ -74,7 +74,7 @@
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "buildTarget": "rxjs-practice:build"
+            "buildTarget": "Simple-Courses-App:build"
           }
         },
         "test": {
