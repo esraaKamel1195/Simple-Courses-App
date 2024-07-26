@@ -12,7 +12,7 @@ export const coursesRoute: Routes = [
       import('./home/home.component').then((c) => c.HomeComponent),
   },
   {
-    path: ':courseUrl',
+    path: 'courses/:courseUrl',
     loadComponent: () =>
       import('./course/course.component').then((c) => c.CourseComponent),
   },

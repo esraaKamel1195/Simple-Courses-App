@@ -8,6 +8,7 @@ import { MatSidenavModule } from "@angular/material/sidenav";
 import { MatToolbarModule } from "@angular/material/toolbar";
 import { MatProgressSpinnerModule } from "@angular/material/progress-spinner";
 import { MatButtonModule } from "@angular/material/button";
+import { HttpClientModule } from '@angular/common/http';
 
 @Component({
   selector: 'app-root',
