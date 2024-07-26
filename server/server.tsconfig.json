@@ -1,6 +1,6 @@
 {
   "compilerOptions": {
-    "module": "common.js",
+    "module": "commonjs",
     "lib": ["es2017"],
     "esModuleInterop": true,
     "moduleResolution": "node",

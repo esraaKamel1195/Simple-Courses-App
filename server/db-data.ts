@@ -58,10 +58,6 @@ export const COURSES: any = {
     seqNo: 4,
     url: 'serverless-angular',
   },
-
-  /*
-
-
   5: {
     id: 5,
     description: 'Angular for Beginners',
@@ -72,9 +68,7 @@ export const COURSES: any = {
     seqNo: 5,
     url: 'angular-for-beginners'
   },
-
-*/
-
+  
   12: {
     id: 12,
     description: 'Angular Testing Course',

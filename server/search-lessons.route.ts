@@ -3,17 +3,19 @@ import { LESSONS } from './db-data';
 import { setTimeout } from 'timers';
 
 export function searchLessons(req: Request, res: Response) {
+  console.log('Searching for lessons ...');
+
   const queryParams = req.query as any;
 
   const courseId = queryParams.courseId,
     filter = queryParams.filter || '',
     sortOrder = queryParams.sortOrder || 'asc',
     pageNumber = parseInt(queryParams.pageNumber) || 0,
-    pageSize = parseInt(queryParams.pageSize) || 3;
+    pageSize = parseInt(queryParams.pageSize);
 
   let lessons = Object.values(LESSONS)
-    .filter((lesson: any) => lesson.courseId == courseId)
-    .sort((l1: any, l2: any) => l1.id - l2.id);
+    .filter((lesson) => lesson.courseId == courseId)
+    .sort((l1, l2) => l1.id - l2.id);
 
   if (filter) {
     lessons = lessons.filter(
