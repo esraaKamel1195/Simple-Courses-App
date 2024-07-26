@@ -13,7 +13,7 @@ import { MatIconModule } from '@angular/material/icon';
   styleUrl: './courses-card-list.component.scss',
 })
 export class CoursesCardListComponent {
-  @Input({ required: true }) courses: Course[] = [];
+  @Input({ required: false }) courses: Course[] = [];
   @Output() courseChanged: EventEmitter<any> = new EventEmitter();
 
   editCourse(course: Course) {

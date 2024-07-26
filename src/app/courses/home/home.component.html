@@ -1,15 +1,15 @@
 <div class="courses-panel">
   <div class="header">
-    <h2 class="title">All Courses</h2>
+    <h2 class="title" >All Courses</h2>
 
-    <button mat-mini-fab>
-      <mat-icon class="add-btn" (click)="onAddCourse()">add</mat-icon>
+    <button mat-mini-fab color="primary" (click)="onAddCourse()">
+      <mat-icon class="add-btn">add</mat-icon>
     </button>
   </div>
 
-  <div class="counters">
+  <!-- <div class="counters">
     <p>In Promo: {{ promoTotal$ | async }}</p>
-  </div>
+  </div> -->
 
   <div class="spinner-container" *ngIf="!(loading$ | async)">
     <mat-spinner></mat-spinner>
@@ -18,7 +18,6 @@
   <mat-tab-group>
     <mat-tab label="Beginners">
       <app-courses-card-list
-        [courses]="beginnerCourses$ | async"
         (courseChanged)="reload()"
       >
       </app-courses-card-list>
@@ -26,7 +25,6 @@
 
     <mat-tab label="Advanced">
       <app-courses-card-list
-        [courses]="advancedCourses$ | async"
         (courseChanged)="reload()"
       ></app-courses-card-list>
     </mat-tab>

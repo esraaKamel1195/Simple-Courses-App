@@ -30,8 +30,8 @@ import { MatButtonModule } from '@angular/material/button';
   styleUrl: './home.component.scss',
 })
 export class HomeComponent implements OnInit {
-  loading$: Observable<boolean> = new Observable();
-  promoTotal$: Observable<number> = new Observable();
+  loading$: Observable<boolean> = new Observable<boolean>();
+  promoTotal$: Observable<number> = new Observable<number>();
   beginnerCourses$: Observable<Course[]> = new Observable<Course[]>();
   advancedCourses$: Observable<Course[]> = new Observable<Course[]>();
 
@@ -50,6 +50,7 @@ export class HomeComponent implements OnInit {
       shareReplay()
     );
 
+    console.log(courses$);
     this.loading$ = courses$.pipe(map((courses) => !!courses));
 
     this.beginnerCourses$ = courses$.pipe(
@@ -58,11 +59,15 @@ export class HomeComponent implements OnInit {
       )
     );
 
+    console.log(this.beginnerCourses$);
+
     this.advancedCourses$ = courses$.pipe(
       map((courses) =>
         courses.filter((course) => course.category == 'ADVANCED')
       )
     );
+
+    console.log(this.advancedCourses$);
   }
 
   onAddCourse() {
