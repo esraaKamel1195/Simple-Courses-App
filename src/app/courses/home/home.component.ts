@@ -32,8 +32,8 @@ import { MatButtonModule } from '@angular/material/button';
 export class HomeComponent implements OnInit {
   loading$: Observable<boolean> = new Observable<boolean>();
   promoTotal$: Observable<number> = new Observable<number>();
-  beginnerCourses$: Observable<Course[]> = new Observable<Course[]>();
-  advancedCourses$: Observable<Course[]> = new Observable<Course[]>();
+  beginnerCourses$: Observable<Course[] | any> = new Observable<Course[]>();
+  advancedCourses$: Observable<Course[] | any> = new Observable<Course[]>();
 
   constructor(
     private dialog: MatDialog,
