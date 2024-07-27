@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { Component, Inject, OnInit } from '@angular/core';
-import { filter, from, Observable } from 'rxjs';
+import { concatMap, filter, from as fromPromise, Observable } from 'rxjs';
 import {
   FormBuilder,
   FormGroup,
@@ -78,28 +78,37 @@ export class CourseDialogComponent implements OnInit {
     }
 
     this.form.valueChanges
-      .pipe(filter(() => this.form.valid))
-      .subscribe((changes) => {
-        const saveCourse$ = from(
-          fetch(`http://localhost:9000/api/course/${this.course.id}`, {
-            method: 'PUT',
-            body: JSON.stringify(changes),
-            headers: {
-              'content-type':'application/json'
-            }
-          })
-        );
-        saveCourse$.subscribe();
-      });
+      .pipe(
+        filter(() => this.form.valid),
+        concatMap(async (changes: FormData) => {
+          await this.saveCourse(changes);
+        })
+      )
+      .subscribe();
+  }
+
+  saveCourse(changes: FormData) {
+    const saveCourse$ = fromPromise(
+      fetch(`http://localhost:9000/api/course/${this.course.id}`, {
+        method: 'PUT',
+        body: JSON.stringify(changes),
+        headers: {
+          'content-type': 'application/json',
+        },
+      })
+    );
+    saveCourse$.subscribe();
   }
 
   onSave() {
     const course: Course = {
       ...this.course,
-      ...this.form.value
-    }
+      ...this.form.value,
+    };
 
-    this.coursesService.editCourse(course.id, course).subscribe(() => this.dialogRef.close());
+    this.coursesService
+      .editCourse(course.id, course)
+      .subscribe(() => this.dialogRef.close());
   }
 
   onClose() {
