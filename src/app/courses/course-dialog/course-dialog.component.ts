@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { Component, Inject, OnInit } from '@angular/core';
-import { concatMap, filter, from as fromPromise, Observable } from 'rxjs';
+import { concatMap, filter, from as fromPromise, mergeMap, Observable } from 'rxjs';
 import {
   FormBuilder,
   FormGroup,
@@ -80,7 +80,10 @@ export class CourseDialogComponent implements OnInit {
     this.form.valueChanges
       .pipe(
         filter(() => this.form.valid),
-        concatMap(async (changes: FormData) => {
+        // concatMap(async (changes: FormData) => {
+        //   await this.saveCourse(changes);
+        // }),
+        mergeMap(async (changes: FormData) => {
           await this.saveCourse(changes);
         })
       )
