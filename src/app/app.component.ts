@@ -36,7 +36,7 @@ export class AppComponent implements OnInit {
 
   ngOnInit(): void {
     this.router.events.subscribe((event) => {
-        console.log(event);
+        // console.log(event);
 
         switch(true) {
           case event instanceof NavigationStart: {
@@ -58,6 +58,5 @@ export class AppComponent implements OnInit {
   }
 
   logout() {
-    throw new Error('Method not implemented.');
   }
 }

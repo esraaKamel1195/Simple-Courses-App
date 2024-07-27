@@ -33,10 +33,8 @@ export class CoursesHttpService {
     });
   }
 
-  editCourse(course: Course) {
-    return this.http.put<Course>(`http://localhost:9000/api/courses/`, {
-      course: course,
-    });
+  editCourse(courseId: number | string, changes: Partial<Course>) {
+    return this.http.put<Course>(`http://localhost:9000/api/course/${courseId}`, changes);
   }
 
   deleteCourse(courseUrl: string) {

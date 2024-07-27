@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { Component, Inject, OnInit } from '@angular/core';
-import { Observable } from 'rxjs';
+import { filter, from, Observable } from 'rxjs';
 import {
   FormBuilder,
   FormGroup,
@@ -18,12 +18,12 @@ import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
+import { MatButtonModule } from '@angular/material/button';
 import { CoursesHttpService } from '../services/courses-http.service';
 import { Course } from '../model/course';
-import { MatButtonModule } from '@angular/material/button';
 
 @Component({
-  selector: 'app-edit-course-dialog',
+  selector: 'app-course-dialog',
   standalone: true,
   imports: [
     CommonModule,
@@ -35,12 +35,12 @@ import { MatButtonModule } from '@angular/material/button';
     ReactiveFormsModule,
     MatSelectModule,
     MatSlideToggleModule,
-    MatButtonModule
+    MatButtonModule,
   ],
-  templateUrl: './edit-course-dialog.component.html',
-  styleUrl: './edit-course-dialog.component.scss',
+  templateUrl: './course-dialog.component.html',
+  styleUrl: './course-dialog.component.scss',
 })
-export class EditCourseDialogComponent implements OnInit {
+export class CourseDialogComponent implements OnInit {
   dialogTitle: string = '';
   loading$: Observable<boolean> = new Observable<boolean>();
   form: FormGroup = new FormGroup({});
@@ -49,7 +49,7 @@ export class EditCourseDialogComponent implements OnInit {
 
   constructor(
     private fb: FormBuilder,
-    private dialogRef: MatDialogRef<EditCourseDialogComponent>,
+    private dialogRef: MatDialogRef<CourseDialogComponent>,
     @Inject(MAT_DIALOG_DATA) data: any,
     private coursesService: CoursesHttpService
   ) {
@@ -76,10 +76,30 @@ export class EditCourseDialogComponent implements OnInit {
         iconUrl: ['', Validators.required],
       });
     }
+
+    this.form.valueChanges
+      .pipe(filter(() => this.form.valid))
+      .subscribe((changes) => {
+        const saveCourse$ = from(
+          fetch(`http://localhost:9000/api/course/${this.course.id}`, {
+            method: 'PUT',
+            body: JSON.stringify(changes),
+            headers: {
+              'content-type':'application/json'
+            }
+          })
+        );
+        saveCourse$.subscribe();
+      });
   }
 
   onSave() {
-    
+    const course: Course = {
+      ...this.course,
+      ...this.form.value
+    }
+
+    this.coursesService.editCourse(course.id, course).subscribe(() => this.dialogRef.close());
   }
 
   onClose() {

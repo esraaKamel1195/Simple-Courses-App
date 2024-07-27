@@ -8,7 +8,7 @@ import { MatTabsModule } from '@angular/material/tabs';
 import { map, Observable, shareReplay } from 'rxjs';
 import { CoursesCardListComponent } from '../courses-card-list/courses-card-list.component';
 import { defaultDialogConfig } from '../shared/default-dialog-config';
-import { EditCourseDialogComponent } from '../edit-course-dialog/edit-course-dialog.component';
+import { CourseDialogComponent } from '../course-dialog/course-dialog.component';
 import { compareCourses, Course } from '../model/course';
 import { CoursesHttpService } from '../services/courses-http.service';
 import { MatButtonModule } from '@angular/material/button';
@@ -50,7 +50,6 @@ export class HomeComponent implements OnInit {
       shareReplay()
     );
 
-    console.log(courses$);
     this.loading$ = courses$.pipe(map((courses) => !!courses));
 
     this.beginnerCourses$ = courses$.pipe(
@@ -59,15 +58,11 @@ export class HomeComponent implements OnInit {
       )
     );
 
-    console.log(this.beginnerCourses$);
-
     this.advancedCourses$ = courses$.pipe(
       map((courses) =>
         courses.filter((course) => course.category == 'ADVANCED')
       )
     );
-
-    console.log(this.advancedCourses$);
   }
 
   onAddCourse() {
@@ -78,6 +73,6 @@ export class HomeComponent implements OnInit {
       mode: 'create',
     };
 
-    this.dialog.open(EditCourseDialogComponent, dialogConfig);
+    this.dialog.open(CourseDialogComponent, dialogConfig).afterClosed().subscribe();
   }
 }
