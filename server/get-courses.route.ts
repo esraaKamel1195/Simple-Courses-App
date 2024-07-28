@@ -20,3 +20,16 @@ export function getCourseByUrl(req: Request, res: Response) {
     res.status(200).json(course);
   }, 1000);
 }
+
+export function getCourseById(req: Request, res: Response) {
+
+  const courseId = req.params['courseId'];
+
+  const courses: any = Object.values(COURSES);
+
+  const course = courses.find((course: any) => course.id == courseId);
+
+  setTimeout(() => {
+    res.status(200).json(course);
+  }, 1000);
+}

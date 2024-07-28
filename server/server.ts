@@ -1,6 +1,6 @@
 import express from 'express';
 import { Application } from 'express';
-import { getAllCourses, getCourseByUrl } from './get-courses.route';
+import { getAllCourses, getCourseByUrl, getCourseById } from './get-courses.route';
 import { searchLessons } from './search-lessons.route';
 import { loginUser } from './auth.route';
 import { saveCourse } from './save-course.route';
@@ -28,6 +28,8 @@ app.route('/api/course/:id').put(saveCourse);
 app.route('/api/course/:id').delete(deleteCourse);
 
 app.route('/api/courses/:courseUrl').get(getCourseByUrl);
+
+app.route('/api/courses/:courseId').get(getCourseById);
 
 app.route('/api/lessons').get(searchLessons);
 
