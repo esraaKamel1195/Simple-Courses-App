@@ -99,12 +99,12 @@ export class CourseDialogComponent implements OnInit, AfterViewInit {
     this.form.valueChanges
       .pipe(
         filter(() => this.form.valid),
-        // ConcatMap function
-        concatMap(changes => 
-          this.saveCourse(changes)
-        ),
+        // ConcatMap rxjs function
+        // concatMap(changes => 
+        //   this.saveCourse(changes)
+        // ),
 
-        // mergeMap Function
+        // mergeMap rxjs Function
         mergeMap(changes => 
            this.saveCourse(changes)
         )
@@ -115,7 +115,7 @@ export class CourseDialogComponent implements OnInit, AfterViewInit {
   ngAfterViewInit(): void {
     fromEvent(this.saveButton.nativeElement, 'click')
       .pipe(
-        concatMap(() => this.saveCourse(this.form.value)),
+        // concatMap(() => this.saveCourse(this.form.value)),
         exhaustMap(() => 
           this.saveCourse(this.form.value)
         )

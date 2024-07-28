@@ -7,6 +7,9 @@ import { MatTableModule } from '@angular/material/table';
 import { concatMap, Observable, tap } from 'rxjs';
 import { Course } from '../model/course';
 import { CoursesHttpService } from '../services/courses-http.service';
+import { createHttpObservable } from '../../common/util';
+// import { setTimeout } from 'timers';
+
 @Component({
   selector: 'app-course',
   standalone: true,
@@ -43,9 +46,16 @@ export class CourseComponent implements OnInit {
       concatMap((course) => this.coursesHttpService.findLessons(course.id)),
       tap(console.log)
     );
+
+    // Implementing a Cancellable HTTP Observable
+    const http$ = createHttpObservable('http://localhost:9000/api/courses');
+    const sub = http$.subscribe();
+
+    setTimeout(() => {
+      sub.unsubscribe();
+    }, 0);
   }
 
   loadLessonsPage(course: Course) {
-
   }
 }
