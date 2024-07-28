@@ -1,6 +1,21 @@
 import { CommonModule } from '@angular/common';
-import { Component, Inject, OnInit } from '@angular/core';
-import { concatMap, filter, from as fromPromise, mergeMap, Observable } from 'rxjs';
+import {
+  Component,
+  Inject,
+  OnInit,
+  AfterViewInit,
+  ViewChild,
+  ElementRef,
+} from '@angular/core';
+import {
+  concatMap,
+  exhaustMap,
+  filter,
+  fromEvent,
+  from as fromPromise,
+  mergeMap,
+  Observable,
+} from 'rxjs';
 import {
   FormBuilder,
   FormGroup,
@@ -40,12 +55,15 @@ import { Course } from '../model/course';
   templateUrl: './course-dialog.component.html',
   styleUrl: './course-dialog.component.scss',
 })
-export class CourseDialogComponent implements OnInit {
+export class CourseDialogComponent implements OnInit, AfterViewInit {
   dialogTitle: string = '';
   loading$: Observable<boolean> = new Observable<boolean>();
   form: FormGroup = new FormGroup({});
   mode: 'create' | 'update';
   course: Course;
+
+  @ViewChild('saveButton', { static: true, read: ElementRef})
+  saveButton: ElementRef<HTMLButtonElement>;
 
   constructor(
     private fb: FormBuilder,
@@ -59,6 +77,7 @@ export class CourseDialogComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    
     const formControls = {
       description: ['', Validators.required],
       category: ['', Validators.required],
@@ -80,18 +99,32 @@ export class CourseDialogComponent implements OnInit {
     this.form.valueChanges
       .pipe(
         filter(() => this.form.valid),
-        // concatMap(async (changes: FormData) => {
-        //   await this.saveCourse(changes);
-        // }),
-        mergeMap(async (changes: FormData) => {
-          await this.saveCourse(changes);
-        })
+        // ConcatMap function
+        concatMap(changes => 
+          this.saveCourse(changes)
+        ),
+
+        // mergeMap Function
+        mergeMap(changes => 
+           this.saveCourse(changes)
+        )
       )
       .subscribe();
   }
 
-  saveCourse(changes: FormData) {
-    const saveCourse$ = fromPromise(
+  ngAfterViewInit(): void {
+    fromEvent(this.saveButton.nativeElement, 'click')
+      .pipe(
+        concatMap(() => this.saveCourse(this.form.value)),
+        exhaustMap(() => 
+          this.saveCourse(this.form.value)
+        )
+      )
+      .subscribe();
+  }
+
+  saveCourse(changes: any) {
+    return fromPromise(
       fetch(`http://localhost:9000/api/course/${this.course.id}`, {
         method: 'PUT',
         body: JSON.stringify(changes),
@@ -100,10 +133,10 @@ export class CourseDialogComponent implements OnInit {
         },
       })
     );
-    saveCourse$.subscribe();
   }
 
   onSave() {
+    console.log('from onSave func');
     const course: Course = {
       ...this.course,
       ...this.form.value,

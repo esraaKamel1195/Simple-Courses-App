@@ -57,6 +57,7 @@
   <button
     mat-raised-button
     color="primary"
+    #saveButton
     [disabled]="!form.valid || (this.loading$ | async)"
     (click)="onSave()"
   >
