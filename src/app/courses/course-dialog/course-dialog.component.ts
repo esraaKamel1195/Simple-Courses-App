@@ -62,7 +62,7 @@ export class CourseDialogComponent implements OnInit, AfterViewInit {
   mode: 'create' | 'update';
   course: Course;
 
-  @ViewChild('saveButton', { static: true, read: ElementRef})
+  @ViewChild('saveButton', { static: true, read: ElementRef })
   saveButton: ElementRef<HTMLButtonElement>;
 
   constructor(
@@ -77,7 +77,6 @@ export class CourseDialogComponent implements OnInit, AfterViewInit {
   }
 
   ngOnInit(): void {
-    
     const formControls = {
       description: ['', Validators.required],
       category: ['', Validators.required],
@@ -100,14 +99,12 @@ export class CourseDialogComponent implements OnInit, AfterViewInit {
       .pipe(
         filter(() => this.form.valid),
         // ConcatMap rxjs function
-        // concatMap(changes => 
+        // concatMap(changes =>
         //   this.saveCourse(changes)
         // ),
 
         // mergeMap rxjs Function
-        mergeMap(changes => 
-           this.saveCourse(changes)
-        )
+        mergeMap((changes) => this.saveCourse(changes))
       )
       .subscribe();
   }
@@ -116,9 +113,7 @@ export class CourseDialogComponent implements OnInit, AfterViewInit {
     fromEvent(this.saveButton.nativeElement, 'click')
       .pipe(
         // concatMap(() => this.saveCourse(this.form.value)),
-        exhaustMap(() => 
-          this.saveCourse(this.form.value)
-        )
+        exhaustMap(() => this.saveCourse(this.form.value))
       )
       .subscribe();
   }

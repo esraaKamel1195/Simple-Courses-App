@@ -3,7 +3,6 @@ import { Injectable } from '@angular/core';
 import { map, Observable } from 'rxjs';
 import { Course } from '../model/course';
 import { Lesson } from '../model/lesson';
-
 @Injectable({
   providedIn: 'root',
 })
@@ -22,8 +21,15 @@ export class CoursesHttpService {
   }
 
   findCourseByUrl(courseUrl: string): Observable<Course> {
+    console.log('courseUrl', courseUrl)
     return this.http.get<Course>(
       `http://localhost:9000/api/courses/${courseUrl}`
+    );
+  }
+
+  findCourseById(courseId: string | number): Observable<Course> {
+    return this.http.get<Course>(
+      `http://localhost:9000/api/courses/${+courseId}`
     );
   }
 

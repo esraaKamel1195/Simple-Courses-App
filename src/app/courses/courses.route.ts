@@ -12,8 +12,13 @@ export const coursesRoute: Routes = [
       import('./home/home.component').then((c) => c.HomeComponent),
   },
   {
-    path: 'courses/:courseUrl',
+    path: 'courses/:courseUrl/:id',
     loadComponent: () =>
       import('./course/course.component').then((c) => c.CourseComponent),
   },
+  // {
+  //   path: 'courses/:id',
+  //   loadComponent: () =>
+  //     import('./course/course.component').then((c) => c.CourseComponent),
+  // },
 ];

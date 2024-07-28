@@ -7,6 +7,15 @@
     <mat-spinner></mat-spinner>
   </div>
 
+  <mat-form-field class="search">
+    <input
+      matInput
+      #searchInput
+      type="text"
+      placeholder="Enter search input"
+    />
+  </mat-form-field>
+
   <mat-table
     class="lessons-table mat-elevation-z8"
     [dataSource]="lessons$ | async"

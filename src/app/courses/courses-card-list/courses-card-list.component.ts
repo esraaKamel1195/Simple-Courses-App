@@ -8,6 +8,8 @@ import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { defaultDialogConfig } from '../shared/default-dialog-config';
 import { CourseDialogComponent } from '../course-dialog/course-dialog.component';
 import { Course } from '../model/course';
+import { createHttpObservable } from '../../common/util';
+
 @Component({
   selector: 'app-courses-card-list',
   standalone: true,
@@ -28,7 +30,15 @@ export class CoursesCardListComponent implements OnInit {
 
   constructor(private dialog: MatDialog) {}
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    // // Implementing a Cancellable HTTP Observable
+    // const http$ = createHttpObservable('http://localhost:9000/api/courses');
+    // const sub = http$.subscribe();
+
+    // setTimeout(() => {
+    //   sub.unsubscribe();
+    // }, 0);
+  }
 
   editCourse(course: Course) {
     const dialogConfig = defaultDialogConfig();
