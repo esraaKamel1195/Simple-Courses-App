@@ -11,6 +11,7 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatButtonModule } from '@angular/material/button';
 import { MatTableModule } from '@angular/material/table';
 import {
+  concat,
   concatMap,
   debounceTime,
   distinctUntilChanged,
@@ -28,9 +29,6 @@ import {
   createHttpObservable,
   createIndividualHttpObservable,
 } from '../../common/util';
-
-// import { createHttpObservable } from '../../common/util';
-// import { setTimeout } from 'timers';
 
 @Component({
   selector: 'app-course',
@@ -51,7 +49,6 @@ export class CourseComponent implements OnInit, AfterViewInit {
   loading$: Observable<boolean>;
   course$: Observable<Course>;
   lessons$: Observable<any>;
-
   displayedColumns = ['seqNo', 'description', 'duration'];
   nextPage = 0;
   courseId: number | string;
@@ -84,14 +81,18 @@ export class CourseComponent implements OnInit, AfterViewInit {
   }
 
   ngAfterViewInit(): void {
-    fromEvent(this.search.nativeElement, 'keyup')
-      .pipe(
-        map((event: any) => event.target.value),
-        debounceTime(600),
-        distinctUntilChanged(),
-        switchMap((searchTerm) => this.loadLessons(searchTerm))
-      )
-      .subscribe(console.log);
+    const searchLessons$ = fromEvent(this.search.nativeElement, 'keyup').pipe(
+      map((event: any) => event.target.value),
+      debounceTime(600),
+      distinctUntilChanged(),
+      switchMap((searchTerm) => this.loadLessons(searchTerm))
+    );
+
+    const initialLessons$ = this.loadLessons();
+
+    // if(this.search.nativeElement.innerHTML) {
+      this.lessons$ = concat(searchLessons$, initialLessons$);
+    // }
   }
 
   loadLessons(searchTerm = '') {
