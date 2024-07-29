@@ -10,15 +10,25 @@ import { ActivatedRoute, RouterModule } from '@angular/router';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatButtonModule } from '@angular/material/button';
 import { MatTableModule } from '@angular/material/table';
-import { concatMap, map, Observable, tap } from 'rxjs';
+import {
+  concatMap,
+  debounceTime,
+  distinctUntilChanged,
+  fromEvent,
+  map,
+  Observable,
+  switchMap,
+  tap,
+} from 'rxjs';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
 import { Course } from '../model/course';
 import { CoursesHttpService } from '../services/courses-http.service';
 import {
   createHttpObservable,
   createIndividualHttpObservable,
 } from '../../common/util';
-import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatInputModule } from '@angular/material/input';
+
 // import { createHttpObservable } from '../../common/util';
 // import { setTimeout } from 'timers';
 
@@ -38,15 +48,15 @@ import { MatInputModule } from '@angular/material/input';
   styleUrl: './course.component.scss',
 })
 export class CourseComponent implements OnInit, AfterViewInit {
-  loading$: Observable<boolean> | undefined;
-  course$: Observable<Course> | undefined;
-  lessons$: Observable<any> | undefined;
+  loading$: Observable<boolean>;
+  course$: Observable<Course>;
+  lessons$: Observable<any>;
 
   displayedColumns = ['seqNo', 'description', 'duration'];
   nextPage = 0;
   courseId: number | string;
   @ViewChild('searchInput', { static: true, read: ElementRef })
-  searchInput: ElementRef<HTMLInputElement>;
+  search: ElementRef;
 
   constructor(
     private coursesHttpService: CoursesHttpService,
@@ -58,9 +68,7 @@ export class CourseComponent implements OnInit, AfterViewInit {
       this.activateRoute.snapshot.paramMap.get('courseUrl')
     );
 
-    const courseId: string = String(
-      this.activateRoute.snapshot.paramMap.get('id')
-    );
+    this.courseId = String(this.activateRoute.snapshot.paramMap.get('id'));
 
     // this.course$ = this.coursesHttpService.findCourseByUrl(courseUrl);
     // this.lessons$ = this.course$.pipe(
@@ -72,22 +80,25 @@ export class CourseComponent implements OnInit, AfterViewInit {
       `http://localhost:9000/api/courses/${courseUrl}`
     );
 
-    this.lessons$ = createHttpObservable(
-      `http://localhost:9000/api/lessons?courseId=${courseId}&pageSize=4`
-    );
-
-    // Implementing a Cancellable HTTP Observable
-    // const http$ = createHttpObservable('http://localhost:9000/api/courses');
-    // const sub = http$.subscribe();
-
-    // setTimeout(() => {
-    //   sub.unsubscribe();
-    // }, 0);
+    this.lessons$ = this.loadLessons();
   }
 
   ngAfterViewInit(): void {
-    console.log(this.searchInput.nativeElement);
+    fromEvent(this.search.nativeElement, 'keyup')
+      .pipe(
+        map((event: any) => event.target.value),
+        debounceTime(600),
+        distinctUntilChanged(),
+        switchMap((searchTerm) => this.loadLessons(searchTerm))
+      )
+      .subscribe(console.log);
   }
 
-  loadLessonsPage(course: Course) {}
+  loadLessons(searchTerm = '') {
+    return createHttpObservable(
+      `http://localhost:9000/api/lessons?courseId=${this.courseId}&pageSize=4&filter=${searchTerm}`
+    ).pipe(map((res) => res));
+  }
+
+  loadMoreLessons(course: Course) {}
 }

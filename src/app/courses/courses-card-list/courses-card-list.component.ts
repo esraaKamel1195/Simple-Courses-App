@@ -31,13 +31,13 @@ export class CoursesCardListComponent implements OnInit {
   constructor(private dialog: MatDialog) {}
 
   ngOnInit(): void {
-    // // Implementing a Cancellable HTTP Observable
-    // const http$ = createHttpObservable('http://localhost:9000/api/courses');
-    // const sub = http$.subscribe();
+    // Implementing a Cancellable HTTP Observable
+    const http$ = createHttpObservable('http://localhost:9000/api/courses');
+    const sub = http$.subscribe();
 
-    // setTimeout(() => {
-    //   sub.unsubscribe();
-    // }, 0);
+    setTimeout(() => {
+      sub.unsubscribe();
+    }, 0);
   }
 
   editCourse(course: Course) {
