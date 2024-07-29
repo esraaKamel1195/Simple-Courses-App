@@ -7,12 +7,17 @@ import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { MatTabsModule } from '@angular/material/tabs';
 import {
   catchError,
+  delay,
+  delayWhen,
   finalize,
   map,
   Observable,
   of,
+  retry,
+  retryWhen,
   shareReplay,
   throwError,
+  timer,
 } from 'rxjs';
 import { CoursesCardListComponent } from '../courses-card-list/courses-card-list.component';
 import { defaultDialogConfig } from '../shared/default-dialog-config';
@@ -78,7 +83,11 @@ export class HomeComponent implements OnInit {
         console.log('finalize called');
       }),
       map((courses) => courses.sort(compareCourses)),
-      shareReplay<Course[]>()
+      shareReplay<Course[]>(),
+      retryWhen((err: any) => err.pipe(
+        // delayWhen(()=> timer(2000)),
+        delay(2000)
+      )),
     );
 
     this.loading$ = courses$.pipe(map((courses) => !!courses));
