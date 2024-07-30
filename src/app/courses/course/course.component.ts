@@ -90,8 +90,8 @@ export class CourseComponent implements OnInit, AfterViewInit {
       startWith(''),
       // debounceTime(600),
       // distinctUntilChanged(),
-      throttle(()=> interval(500)),
-      // throttleTime(500),
+      // throttle(()=> interval(500)),
+      throttleTime(500),
       switchMap((searchTerm) => this.loadLessons(searchTerm))
     );
 
