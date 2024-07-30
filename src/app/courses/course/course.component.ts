@@ -33,6 +33,7 @@ import {
   createHttpObservable,
   createIndividualHttpObservable,
 } from '../../common/util';
+import { debug, RXJSLoggingLevel } from '../../common/debug';
 
 @Component({
   selector: 'app-course',
@@ -79,7 +80,7 @@ export class CourseComponent implements OnInit, AfterViewInit {
 
     this.course$ = createIndividualHttpObservable(
       `http://localhost:9000/api/courses/${courseUrl}`
-    );
+    ).pipe(debug(RXJSLoggingLevel.INFO, 'Course Value'));
 
     this.lessons$ = this.loadLessons();
   }
@@ -88,24 +89,28 @@ export class CourseComponent implements OnInit, AfterViewInit {
     const searchLessons$ = fromEvent(this.search.nativeElement, 'keyup').pipe(
       map((event: any) => event.target.value),
       startWith(''),
-      // debounceTime(600),
-      // distinctUntilChanged(),
+      debounceTime(600),
+      distinctUntilChanged(),
       // throttle(()=> interval(500)),
-      throttleTime(500),
-      switchMap((searchTerm) => this.loadLessons(searchTerm))
+      // throttleTime(500),
+      switchMap((searchTerm) => this.loadLessons(searchTerm)),
+      debug(RXJSLoggingLevel.INFO, 'Searched Lessons value')
     );
 
     const initialLessons$ = this.loadLessons();
 
     // if(this.search.nativeElement.innerHTML) {
-      this.lessons$ = concat(searchLessons$, initialLessons$);
+    this.lessons$ = concat(searchLessons$, initialLessons$);
     // }
   }
 
   loadLessons(searchTerm = '') {
     return createHttpObservable(
       `http://localhost:9000/api/lessons?courseId=${this.courseId}&pageSize=10&filter=${searchTerm}`
-    ).pipe(map((res) => res));
+    ).pipe(
+      map((res) => res),
+      debug(RXJSLoggingLevel.INFO, 'Lessons value')
+    );
   }
 
   loadMoreLessons(course: Course) {}
