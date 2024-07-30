@@ -18,6 +18,7 @@ import {
   fromEvent,
   map,
   Observable,
+  startWith,
   switchMap,
   tap,
 } from 'rxjs';
@@ -83,6 +84,7 @@ export class CourseComponent implements OnInit, AfterViewInit {
   ngAfterViewInit(): void {
     const searchLessons$ = fromEvent(this.search.nativeElement, 'keyup').pipe(
       map((event: any) => event.target.value),
+      startWith(''),
       debounceTime(600),
       distinctUntilChanged(),
       switchMap((searchTerm) => this.loadLessons(searchTerm))
@@ -97,7 +99,7 @@ export class CourseComponent implements OnInit, AfterViewInit {
 
   loadLessons(searchTerm = '') {
     return createHttpObservable(
-      `http://localhost:9000/api/lessons?courseId=${this.courseId}&pageSize=4&filter=${searchTerm}`
+      `http://localhost:9000/api/lessons?courseId=${this.courseId}&pageSize=10&filter=${searchTerm}`
     ).pipe(map((res) => res));
   }
 
