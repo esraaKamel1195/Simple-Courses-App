@@ -16,11 +16,14 @@ import {
   debounceTime,
   distinctUntilChanged,
   fromEvent,
+  interval,
   map,
   Observable,
   startWith,
   switchMap,
   tap,
+  throttle,
+  throttleTime,
 } from 'rxjs';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
@@ -85,8 +88,10 @@ export class CourseComponent implements OnInit, AfterViewInit {
     const searchLessons$ = fromEvent(this.search.nativeElement, 'keyup').pipe(
       map((event: any) => event.target.value),
       startWith(''),
-      debounceTime(600),
-      distinctUntilChanged(),
+      // debounceTime(600),
+      // distinctUntilChanged(),
+      throttle(()=> interval(500)),
+      // throttleTime(500),
       switchMap((searchTerm) => this.loadLessons(searchTerm))
     );
 
