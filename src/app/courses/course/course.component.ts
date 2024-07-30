@@ -15,6 +15,7 @@ import {
   concatMap,
   debounceTime,
   distinctUntilChanged,
+  forkJoin,
   fromEvent,
   interval,
   map,
@@ -83,6 +84,13 @@ export class CourseComponent implements OnInit, AfterViewInit {
     ).pipe(debug(RXJSLoggingLevel.INFO, 'Course Value'));
 
     this.lessons$ = this.loadLessons();
+
+    forkJoin(this.course$, this.lessons$).pipe(
+      tap(([course,lessons])=>{
+        console.log("course", course);
+        console.log("lessons", lessons);
+      })
+    ).subscribe();
   }
 
   ngAfterViewInit(): void {
@@ -93,15 +101,12 @@ export class CourseComponent implements OnInit, AfterViewInit {
       distinctUntilChanged(),
       // throttle(()=> interval(500)),
       // throttleTime(500),
-      switchMap((searchTerm) => this.loadLessons(searchTerm)),
+      // switchMap((searchTerm) => this.loadLessons(searchTerm)),
       debug(RXJSLoggingLevel.INFO, 'Searched Lessons value')
     );
 
-    const initialLessons$ = this.loadLessons();
-
-    // if(this.search.nativeElement.innerHTML) {
-    this.lessons$ = concat(searchLessons$, initialLessons$);
-    // }
+    // const initialLessons$ = this.loadLessons();
+    // this.lessons$ = concat(searchLessons$, initialLessons$);
   }
 
   loadLessons(searchTerm = '') {
