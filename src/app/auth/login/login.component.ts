@@ -15,6 +15,8 @@ import { AuthService } from '../auth.service';
 import { AppState } from '../../reducers';
 import { Store } from '@ngrx/store';
 import { LoginAction } from '../auth.actions';
+import { AuthActions } from '../../actions-types';
+import { noop, tap } from 'rxjs';
 
 @Component({
   selector: 'app-login',
@@ -49,13 +51,27 @@ export class LoginComponent implements OnInit {
   }
 
   login() {
+    // With Rxjs Operators
+    // this.authService
+    //   .login(this.form.value.email, this.form.value.password)
+    //   .pipe(
+    //     tap((user) => {
+    //       this.store.dispatch(AuthActions.LoginAction({ user: user }));
+    //       this.router.navigateByUrl('/courses');
+    //     })
+    //   )
+    //   .subscribe(
+    //     noop, // in case of successful login
+    //     () => {
+    //     console.log('Login Failed');
+    //   });
+
     this.authService
       .login(this.form.value.email, this.form.value.password)
       .subscribe({
         next: (user) => {
-          console.log('response', user);
-          this.store.dispatch(LoginAction({ user: user }));
-          this.router.navigate(['/']);
+          this.store.dispatch(AuthActions.LoginAction({ user: user }));
+          this.router.navigateByUrl('/courses');
         },
         error: (error) => {
           console.log(error);
