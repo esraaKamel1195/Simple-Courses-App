@@ -12,6 +12,9 @@ import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { AuthService } from '../auth.service';
+import { AppState } from '../../reducers';
+import { Store } from '@ngrx/store';
+import { LoginAction } from '../auth.actions';
 
 @Component({
   selector: 'app-login',
@@ -34,6 +37,7 @@ export class LoginComponent implements OnInit {
   constructor(
     private fb: FormBuilder,
     private authService: AuthService,
+    private store: Store<AppState>,
     private router: Router
   ) {}
 
@@ -45,14 +49,17 @@ export class LoginComponent implements OnInit {
   }
 
   login() {
-    this.authService.login(this.form.value.email, this.form.value.password).subscribe({
-      next: (response) => {
-        console.log('response', response);
-        this.router.navigate(['/']);
-      },
-      error: (error) => {
-        console.log(error);
-      }
-    });
+    this.authService
+      .login(this.form.value.email, this.form.value.password)
+      .subscribe({
+        next: (user) => {
+          console.log('response', user);
+          this.store.dispatch(LoginAction({ user: user }));
+          this.router.navigate(['/']);
+        },
+        error: (error) => {
+          console.log(error);
+        },
+      });
   }
 }

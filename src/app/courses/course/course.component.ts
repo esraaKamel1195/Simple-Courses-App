@@ -110,6 +110,7 @@ export class CourseComponent implements OnInit, AfterViewInit {
 
 
     // try behavior subject
+
     const behaviorSubject = new BehaviorSubject<number>(1);
     behaviorSubject.subscribe((value)=> console.log("behaviorSubject subscriber 1", value));
     behaviorSubject.next(2);
@@ -122,7 +123,6 @@ export class CourseComponent implements OnInit, AfterViewInit {
     // the parameter is buffer size اللي هييجي جديد هيشوف قيمة واحده بس
     const replaySubject = new ReplaySubject<number>(1);
     replaySubject.subscribe((value)=> console.log("replaySubject subscriber 1", value));
-
     replaySubject.next(1);
     replaySubject.next(2);
 
@@ -131,6 +131,7 @@ export class CourseComponent implements OnInit, AfterViewInit {
 
 
     // try async subject
+    // publish last variable before complete
     const asyncSubject = new AsyncSubject<number>();
     asyncSubject.subscribe((value)=> console.log("asyncSubject subscriber 1", value));
 
