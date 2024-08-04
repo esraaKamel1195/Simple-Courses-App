@@ -14,6 +14,7 @@ import { environment } from '../environments/environment';
 import { AuthModule } from './auth/auth.module';
 import { CoursesModule } from './courses/courses.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { AppModule } from './app.module';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -26,8 +27,9 @@ export const appConfig: ApplicationConfig = {
       FormsModule,
       ReactiveFormsModule,
       StoreModule.forRoot({}, {}),
+      AppModule,
       AuthModule,
-      CoursesModule
+      CoursesModule,
     ),
     provideStoreDevtools({ maxAge: 25, logOnly: environment.production }),
     provideEffects(),
