@@ -11,6 +11,9 @@ import { provideStore, StoreModule } from '@ngrx/store';
 import { provideEffects } from '@ngrx/effects';
 import { provideStoreDevtools } from '@ngrx/store-devtools';
 import { environment } from '../environments/environment';
+import { AuthModule } from './auth/auth.module';
+import { CoursesModule } from './courses/courses.module';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -19,8 +22,14 @@ export const appConfig: ApplicationConfig = {
     provideHttpClient(),
     provideHttpClient(withInterceptorsFromDi()),
     provideStore(),
-    importProvidersFrom(StoreModule.forRoot({}, {})),
+    importProvidersFrom(
+      FormsModule,
+      ReactiveFormsModule,
+      StoreModule.forRoot({}, {}),
+      AuthModule,
+      CoursesModule
+    ),
     provideStoreDevtools({ maxAge: 25, logOnly: environment.production }),
-    provideEffects()
+    provideEffects(),
   ],
 };
