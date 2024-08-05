@@ -25,7 +25,13 @@ const initialAuthState: AuthState = { user: undefined };
 
 export const authReducer = createReducer(
   initialAuthState,
-  on(AuthActions.LoginAction, (state, action) => {return { user: action.user }})
+  on(AuthActions.LoginAction, (state, action) => {
+    return { user: action.user };
+  }),
+
+  on(AuthActions.LogoutAction, (state, action) => {
+    return { user: undefined };
+  })
 );
 
 export const metaReducers: MetaReducer<AuthState>[] = isDevMode() ? [] : [];

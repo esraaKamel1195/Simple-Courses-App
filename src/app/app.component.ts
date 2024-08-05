@@ -21,6 +21,7 @@ import { select, Store } from '@ngrx/store';
 import { AppState } from './reducers';
 import { map, Observable } from 'rxjs';
 import { IsLoggedInSelector, IsLoggedOutSelector } from './auth/auth.selectors';
+import { LogoutAction } from './auth/auth.actions';
 
 @Component({
   selector: 'app-root',
@@ -81,5 +82,7 @@ export class AppComponent implements OnInit {
     ); 
   }
 
-  logout() {}
+  logout() {
+    this.store.dispatch(LogoutAction());
+  }
 }
