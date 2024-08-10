@@ -21,7 +21,7 @@ class AuthGuardClass {
       select(IsLoggedInSelector),
       tap((isLoggedIn) => {
         if (!isLoggedIn) {
-          this.router.navigateByUrl('/auth');
+          this.router.navigateByUrl('/auth/login');
         }
       })
     );

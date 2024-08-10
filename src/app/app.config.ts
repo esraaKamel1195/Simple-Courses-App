@@ -8,7 +8,7 @@ import {
   withInterceptorsFromDi,
 } from '@angular/common/http';
 import { provideStore, StoreModule } from '@ngrx/store';
-import { provideEffects } from '@ngrx/effects';
+import { EffectsModule, provideEffects } from '@ngrx/effects';
 import { provideStoreDevtools } from '@ngrx/store-devtools';
 import { environment } from '../environments/environment';
 import { AuthModule } from './auth/auth.module';
@@ -27,11 +27,12 @@ export const appConfig: ApplicationConfig = {
       FormsModule,
       ReactiveFormsModule,
       StoreModule.forRoot({}, {}),
+      EffectsModule.forRoot([]),
       AppModule,
       AuthModule,
       CoursesModule,
     ),
     provideStoreDevtools({ maxAge: 25, logOnly: environment.production }),
-    provideEffects(),
+    // provideEffects(),
   ],
 };
