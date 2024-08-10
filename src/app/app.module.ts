@@ -7,9 +7,11 @@ import * as fromApp from './reducers';
   declarations: [],
   imports: [
     CommonModule,
-    StoreModule.forFeature(fromApp.appFeatureKey, fromApp.reducers, {
-      metaReducers: fromApp.metaReducers,
-    }),
+    StoreModule.forFeature(
+      fromApp.appFeatureKey,
+      fromApp.reducers, {
+        metaReducers: fromApp.metaReducers,
+      }),
   ],
 })
 export class AppModule {}

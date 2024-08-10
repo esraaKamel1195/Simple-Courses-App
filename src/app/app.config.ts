@@ -16,6 +16,7 @@ import { CoursesModule } from './courses/courses.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { AppModule } from './app.module';
 import { provideRouterStore, RouterState, StoreRouterConnectingModule } from '@ngrx/router-store';
+import * as fromApp from './reducers';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -27,7 +28,17 @@ export const appConfig: ApplicationConfig = {
     importProvidersFrom(
       FormsModule,
       ReactiveFormsModule,
-      StoreModule.forRoot({}, {}),
+      StoreModule.forRoot({},{}),
+      StoreModule.forRoot(
+        fromApp.reducers, {
+        metaReducers: fromApp.metaReducers,
+        runtimeChecks: {
+          strictStateImmutability: true,
+          strictStateSerializability: true,
+          strictActionImmutability: true,
+          strictActionSerializability: true
+        }
+      }),
       EffectsModule.forRoot([]),
       StoreRouterConnectingModule.forRoot({
         stateKey: "router",
