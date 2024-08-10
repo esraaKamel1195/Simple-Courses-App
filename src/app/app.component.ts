@@ -22,6 +22,7 @@ import { AppState } from './reducers';
 import { map, Observable } from 'rxjs';
 import { IsLoggedInSelector, IsLoggedOutSelector } from './auth/auth.selectors';
 import { LogoutAction } from './auth/auth.actions';
+import { AuthActions } from './actions-types';
 
 @Component({
   selector: 'app-root',
@@ -73,13 +74,16 @@ export class AppComponent implements OnInit {
 
     this.store.subscribe((state) => console.log('Store value is ', state));
 
-    this.isLoggedIn$ = this.store.pipe(
-      select(IsLoggedInSelector)
-    );
+    this.isLoggedIn$ = this.store.pipe(select(IsLoggedInSelector));
 
-    this.isLoggedOut$ = this.store.pipe(
-      select(IsLoggedOutSelector)
-    ); 
+    this.isLoggedOut$ = this.store.pipe(select(IsLoggedOutSelector));
+
+    const userProfile = localStorage.getItem('User');
+
+    if (userProfile)
+      this.store.dispatch(
+        AuthActions.LoginAction({ user: JSON.parse(userProfile) })
+      );
   }
 
   logout() {
