@@ -15,6 +15,7 @@ import { AuthModule } from './auth/auth.module';
 import { CoursesModule } from './courses/courses.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { AppModule } from './app.module';
+import { provideRouterStore, RouterState, StoreRouterConnectingModule } from '@ngrx/router-store';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -28,11 +29,15 @@ export const appConfig: ApplicationConfig = {
       ReactiveFormsModule,
       StoreModule.forRoot({}, {}),
       EffectsModule.forRoot([]),
+      StoreRouterConnectingModule.forRoot({
+        stateKey: "router",
+        routerState: RouterState.Minimal
+      }),
       AppModule,
       AuthModule,
-      CoursesModule,
+      CoursesModule
     ),
     provideStoreDevtools({ maxAge: 25, logOnly: environment.production }),
-    // provideEffects(),
+    provideRouterStore(),
   ],
 };
