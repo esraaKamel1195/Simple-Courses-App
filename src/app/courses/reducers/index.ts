@@ -9,13 +9,13 @@ import {
 
 export const courseFeatureKey = 'course';
 
-export interface State {
+export interface CourseState {
 
 }
 
-export const reducers: ActionReducerMap<State> = {
+export const reducers: ActionReducerMap<CourseState> = {
 
 };
 
 
-export const metaReducers: MetaReducer<State>[] = isDevMode() ? [] : [];
+export const metaReducers: MetaReducer<CourseState>[] = isDevMode() ? [] : [];

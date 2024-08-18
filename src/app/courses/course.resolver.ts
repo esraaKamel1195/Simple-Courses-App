@@ -15,7 +15,6 @@ export class CoursesResolver implements Resolve<any> {
   constructor(private store: Store<AppState>) {}
 
   resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
-    // throw new Error("Method Not Implemented yet.");
     return this.store.pipe(
       tap(() => {
         if(!this.isLoading) {
