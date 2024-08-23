@@ -9,9 +9,7 @@ import { CoursesEffects } from './course.effects';
   declarations: [],
   imports: [
     CommonModule,
-    StoreModule.forFeature(fromCourse.courseFeatureKey, fromCourse.reducers, {
-      metaReducers: fromCourse.metaReducers,
-    }),
+    StoreModule.forFeature(fromCourse.courseFeatureKey, fromCourse.coursesReducer),
     EffectsModule.forFeature([CoursesEffects])
   ],
 })
