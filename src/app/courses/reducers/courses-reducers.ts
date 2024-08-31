@@ -9,7 +9,7 @@ import {
   MetaReducer,
   on,
 } from '@ngrx/store';
-import { Course } from '../model/course';
+import { compareCourses, Course } from '../model/course';
 import { CourseActions } from '../course-actions-types';
 
 export const courseFeatureKey = 'course';
@@ -24,16 +24,21 @@ export interface CourseState extends EntityState<Course> {
 // state.ids;
 // state.entities;
 
-export const adapter = createEntityAdapter<Course>();
+export const adapter = createEntityAdapter<Course>({
+  sortComparer: compareCourses,
+  selectId: (course) => course.id,
+});
 
 export const courseInitialState = adapter.getInitialState();
 
 export const coursesReducer = createReducer(
   courseInitialState,
-  on(CourseActions.AllCoursesLoadedAction,
-    (state, action) => adapter.addMany(action.courses, state)
+  on(CourseActions.AllCoursesLoadedAction, (state, action) =>
+    adapter.addMany(action.courses, state)
   )
 );
+
+export const { selectAll } = adapter.getSelectors();
 
 // export const reducers: ActionReducerMap<CourseState> = {
 // };

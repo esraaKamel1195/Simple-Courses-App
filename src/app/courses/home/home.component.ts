@@ -25,6 +25,9 @@ import { CourseDialogComponent } from '../course-dialog/course-dialog.component'
 import { compareCourses, Course } from '../model/course';
 import { CoursesHttpService } from '../services/courses-http.service';
 import { MatButtonModule } from '@angular/material/button';
+import { select, Store } from '@ngrx/store';
+import { AppState } from '../../reducers';
+import { selectAdvancedCourses, selectBeginnerCourses, selectPromoCourses } from '../courses.selector';
 
 @Component({
   selector: 'app-home',
@@ -50,13 +53,18 @@ export class HomeComponent implements OnInit {
 
   constructor(
     private dialog: MatDialog,
+    private store: Store<AppState>,
     private coursesHttpService: CoursesHttpService
   ) {}
 
   ngOnInit(): void {
-    this.reload();
+    this.beginnerCourses$ = this.store.pipe(select(selectBeginnerCourses));
+    this.advancedCourses$ = this.store.pipe(select(selectAdvancedCourses));
+    this.promoTotal$ = this.store.pipe(select(selectPromoCourses));
+    console.log(this.promoTotal$);
   }
 
+  // ******************************* Used in case implemented with rxjs **********************************
   reload() {
     const courses$ = this.coursesHttpService.findAllCourses().pipe(
       catchError((err) => {
