@@ -36,6 +36,10 @@ import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MatButtonModule } from '@angular/material/button';
 import { CoursesHttpService } from '../services/courses-http.service';
 import { Course } from '../model/course';
+import { AppState } from '../../reducers';
+import { Store } from '@ngrx/store';
+import { CoursesUpdate } from '../course.action';
+import { Update } from '@ngrx/entity';
 
 @Component({
   selector: 'app-course-dialog',
@@ -68,6 +72,7 @@ export class CourseDialogComponent implements OnInit, AfterViewInit {
   constructor(
     private fb: FormBuilder,
     private dialogRef: MatDialogRef<CourseDialogComponent>,
+    private store: Store<AppState>,
     @Inject(MAT_DIALOG_DATA) data: any,
     private coursesService: CoursesHttpService
   ) {
@@ -95,47 +100,66 @@ export class CourseDialogComponent implements OnInit, AfterViewInit {
       });
     }
 
-    this.form.valueChanges
-      .pipe(
-        filter(() => this.form.valid),
-        // ConcatMap rxjs function
-        // concatMap(changes =>
-        //   this.saveCourse(changes)
-        // ),
+    // this.form.valueChanges
+    //   .pipe(
+    //     filter(() => this.form.valid),
+    //     // ConcatMap rxjs function
+    //     // concatMap(changes =>
+    //     //   this.saveCourse(changes)
+    //     // ),
 
-        // mergeMap rxjs Function
-        mergeMap((changes) => this.saveCourse(changes))
-      )
-      .subscribe();
+    //     // mergeMap rxjs Function
+    //     mergeMap((changes) => this.saveCourse(changes))
+    //   )
+    //   .subscribe();
   }
 
   ngAfterViewInit(): void {
-    fromEvent(this.saveButton.nativeElement, 'click')
-      .pipe(
-        // concatMap(() => this.saveCourse(this.form.value)),
-        exhaustMap(() => this.saveCourse(this.form.value))
-      )
-      .subscribe();
+    // Use to implement with rxjs
+    // fromEvent(this.saveButton.nativeElement, 'click')
+    //   .pipe(
+    //     // concatMap(() => this.saveCourse(this.form.value)),
+    //     exhaustMap(() => this.saveCourse(this.form.value))
+    //   )
+    //   .subscribe();
   }
 
   saveCourse(changes: any) {
-    return fromPromise(
-      fetch(`http://localhost:9000/api/course/${this.course.id}`, {
-        method: 'PUT',
-        body: JSON.stringify(changes),
-        headers: {
-          'content-type': 'application/json',
-        },
-      })
-    );
+    // Use to implement with rxjs
+    // return fromPromise(
+    //   fetch(`http://localhost:9000/api/course/${this.course.id}`, {
+    //     method: 'PUT',
+    //     body: JSON.stringify(changes),
+    //     headers: {
+    //       'content-type': 'application/json',
+    //     },
+    //   })
+    // );
+
+    const updatedData: Update<Course> = {
+      id: this.course.id,
+      changes: changes
+    };
+
+    this.store.dispatch(CoursesUpdate({updated: updatedData}));
+    this.dialogRef.close();
   }
 
   onSave() {
     console.log('from onSave func');
+
     const course: Course = {
       ...this.course,
       ...this.form.value,
     };
+
+    const updatedData: Update<Course> = {
+      id: this.course.id,
+      changes: course
+    };
+
+    this.store.dispatch(CoursesUpdate({updated: updatedData}));
+    this.dialogRef.close();
 
     this.coursesService
       .editCourse(course.id, course)

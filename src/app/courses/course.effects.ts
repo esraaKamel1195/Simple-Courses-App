@@ -21,4 +21,20 @@ export class CoursesEffects {
       map((courses) => AllCoursesLoadedAction({ courses }))
     )
   );
+
+  saveCourse$ = createEffect(
+    () =>
+      this.actions$.pipe(
+        ofType(CourseActions.CoursesUpdate),
+        concatMap((action) =>
+          this.courseHttpService.editCourse(
+            action.updated.id,
+            action.updated.changes
+          )
+        )
+      ),
+    {
+      dispatch: false,
+    }
+  );
 }
