@@ -27,7 +27,11 @@ import { CoursesHttpService } from '../services/courses-http.service';
 import { MatButtonModule } from '@angular/material/button';
 import { select, Store } from '@ngrx/store';
 import { AppState } from '../../reducers';
-import { selectAdvancedCourses, selectBeginnerCourses, selectPromoCourses } from '../courses.selector';
+import {
+  selectAdvancedCourses,
+  selectBeginnerCourses,
+  selectPromoCourses,
+} from '../courses.selector';
 
 @Component({
   selector: 'app-home',
@@ -92,10 +96,12 @@ export class HomeComponent implements OnInit {
       }),
       map((courses) => courses.sort(compareCourses)),
       shareReplay<Course[]>(),
-      retryWhen((err: any) => err.pipe(
-        // delayWhen(()=> timer(2000)),
-        delay(2000)
-      )),
+      retryWhen((err: any) =>
+        err.pipe(
+          // delayWhen(()=> timer(2000)),
+          delay(2000)
+        )
+      )
     );
 
     this.loading$ = courses$.pipe(map((courses) => !!courses));

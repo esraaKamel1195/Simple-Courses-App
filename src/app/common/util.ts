@@ -5,13 +5,13 @@ export function createHttpObservable(url: string): Observable<any[]> {
   const controller = new AbortController();
   const signal = controller.signal;
 
-   return new Observable((observable) => {
-    fetch(url, {signal})
+  return new Observable((observable) => {
+    fetch(url, { signal })
       .then((response: any) => {
-        if(response.ok) {
+        if (response.ok) {
           return response.json();
-        }else {
-          observable.error("Request fails with status code" +response.status)
+        } else {
+          observable.error('Request fails with status code' + response.status);
         }
       })
       .then((body) => {
@@ -21,16 +21,18 @@ export function createHttpObservable(url: string): Observable<any[]> {
       .catch((err) => {
         console.log(err);
       });
-      return () => controller.abort();
+    return () => controller.abort();
   });
 }
 
-export function createIndividualHttpObservable(url: string): Observable<Course> {
+export function createIndividualHttpObservable(
+  url: string
+): Observable<Course> {
   const controller = new AbortController();
   const signal = controller.signal;
 
   return new Observable((observable) => {
-    fetch(url, {signal})
+    fetch(url, { signal })
       .then((response) => {
         return response.json();
       })
@@ -41,6 +43,6 @@ export function createIndividualHttpObservable(url: string): Observable<Course> 
       .catch((err) => {
         console.log(err);
       });
-      return () => controller.abort();
+    return () => controller.abort();
   });
 }

@@ -1,7 +1,7 @@
 import { ApplicationConfig, importProvidersFrom } from '@angular/core';
 import { provideRouter } from '@angular/router';
 
-import { routes } from './app.routes';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 import {
   provideHttpClient,
@@ -10,12 +10,14 @@ import {
 import { provideStore, StoreModule } from '@ngrx/store';
 import { EffectsModule, provideEffects } from '@ngrx/effects';
 import { provideStoreDevtools } from '@ngrx/store-devtools';
+import { provideRouterStore, RouterState, StoreRouterConnectingModule } from '@ngrx/router-store';
+
+import { routes } from './app.routes';
+
 import { environment } from '../environments/environment';
 import { AuthModule } from './auth/auth.module';
 import { CoursesModule } from './courses/courses.module';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { AppModule } from './app.module';
-import { provideRouterStore, RouterState, StoreRouterConnectingModule } from '@ngrx/router-store';
 import * as fromApp from './reducers';
 
 export const appConfig: ApplicationConfig = {

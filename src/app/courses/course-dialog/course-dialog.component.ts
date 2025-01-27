@@ -138,10 +138,10 @@ export class CourseDialogComponent implements OnInit, AfterViewInit {
 
     const updatedData: Update<Course> = {
       id: this.course.id,
-      changes: changes
+      changes: changes,
     };
 
-    this.store.dispatch(CoursesUpdate({updated: updatedData}));
+    this.store.dispatch(CoursesUpdate({ updated: updatedData }));
     this.dialogRef.close();
   }
 
@@ -155,10 +155,10 @@ export class CourseDialogComponent implements OnInit, AfterViewInit {
 
     const updatedData: Update<Course> = {
       id: this.course.id,
-      changes: course
+      changes: course,
     };
 
-    this.store.dispatch(CoursesUpdate({updated: updatedData}));
+    this.store.dispatch(CoursesUpdate({ updated: updatedData }));
     this.dialogRef.close();
 
     this.coursesService

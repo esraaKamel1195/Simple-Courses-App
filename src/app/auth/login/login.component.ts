@@ -70,7 +70,9 @@ export class LoginComponent implements OnInit {
       .login(this.form.value.email, this.form.value.password)
       .subscribe({
         next: (user) => {
-          this.store.dispatch(AuthActions.LoginAction({ user: user }));
+          this.store.dispatch(
+            AuthActions.LoginAction({ user: user })
+          );
           this.router.navigateByUrl('/courses');
         },
         error: (error) => {
