@@ -1,8 +1,8 @@
-import { Request, Response } from "express";
-import { COURSES } from "./db-data";
+import { Request, Response } from 'express';
+import { COURSES } from './db-data';
 
 export function getAllCourses(req: Request, res: Response) {
-  console.log("Retrieving courses data ...");
+  console.log('Retrieving courses data ...');
 
   setTimeout(() => {
     res.status(200).json({ payload: Object.values(COURSES) });
@@ -10,9 +10,7 @@ export function getAllCourses(req: Request, res: Response) {
 }
 
 export function getCourseByUrl(req: Request, res: Response) {
-  console.log("Get Course By Url ...");
-
-  const courseUrl = req.params["courseUrl"];
+  const courseUrl = req.params['courseUrl'];
 
   const courses: any = Object.values(COURSES);
 
@@ -23,9 +21,7 @@ export function getCourseByUrl(req: Request, res: Response) {
   }, 1000);
 }
 
-
 export function getCourseById(req: Request, res: Response) {
-  console.log("Get Course By Id ...");
 
   const courseId = req.params['courseId'];
 
@@ -33,7 +29,6 @@ export function getCourseById(req: Request, res: Response) {
 
   const course = courses.find((course: any) => course.id == courseId);
 
-  // console.log(course);
   setTimeout(() => {
     res.status(200).json(course);
   }, 1000);

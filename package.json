@@ -7,7 +7,9 @@
     "server": "ts-node -p ./server/server.tsconfig.json ./server/server.ts",
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
-    "test": "ng test"
+    "test": "ng test",
+    "lint": "ng lint",
+    "e2e": "ng e2e"
   },
   "private": true,
   "dependencies": {
@@ -26,6 +28,7 @@
     "@ngrx/router-store": "^18.0.2",
     "@ngrx/store": "^18.0.2",
     "@ngrx/store-devtools": "^18.0.2",
+    "@ngrx/data": "^18.0.2",
     "@types/cors": "^2.8.17",
     "body-parser": "^1.20.2",
     "core-js": "^3.37.1",
@@ -35,7 +38,9 @@
     "rxjs": "~7.8.0",
     "ts-node-dev": "^2.0.0",
     "tslib": "^2.3.0",
-    "zone.js": "~0.14.3"
+    "zone.js": "~0.14.3",
+    "@angular-devkit/schematics": "^18.0.1",
+    "@angular/material-moment-adapter": "^18.0.0"
   },
   "devDependencies": {
     "@angular-devkit/build-angular": "^18.1.2",
@@ -52,6 +57,12 @@
     "karma-jasmine": "~5.1.0",
     "karma-jasmine-html-reporter": "~2.1.0",
     "ts-node": "^10.9.2",
-    "typescript": "~5.4.2"
-  }
+    "typescript": "~5.4.2",
+    "@angular/language-service": "^18.1.2",
+    "@types/jasminewd2": "~2.0.2",
+    "jasmine-spec-reporter": "~5.0.0",
+    "karma-cli": "~1.0.1",
+    "karma-coverage-istanbul-reporter": "~3.0.2"
+  },
+  "license": "MIT"
 }

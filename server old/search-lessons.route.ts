@@ -1,15 +1,15 @@
-import { Request, Response } from "express";
-import { LESSONS } from "./db-data";
-import { setTimeout } from "timers";
+import { Request, Response } from 'express';
+import { LESSONS } from './db-data';
+import { setTimeout } from 'timers';
 
 export function searchLessons(req: Request, res: Response) {
-  console.log("Searching for lessons ...");
+  console.log('Searching for lessons ...');
 
   const queryParams = req.query as any;
 
   const courseId = queryParams.courseId,
-    filter = queryParams.filter || "",
-    sortOrder = queryParams.sortOrder || "asc",
+    filter = queryParams.filter || '',
+    sortOrder = queryParams.sortOrder || 'asc',
     pageNumber = parseInt(queryParams.pageNumber) || 0,
     pageSize = parseInt(queryParams.pageSize);
 
@@ -25,7 +25,7 @@ export function searchLessons(req: Request, res: Response) {
     );
   }
 
-  if (sortOrder == "desc") {
+  if (sortOrder == 'desc') {
     lessons = lessons.reverse();
   }
 

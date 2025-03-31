@@ -1,0 +1,24 @@
+{
+  "version": 2,
+  "builds": [
+    {
+      "src": "angular.json",
+      "use": "@vercel/static-build",
+      "config": { "distDir": "dist/Simple-Courses-App" }
+    },
+    {
+      "src": "server/server.js",
+      "use": "@vercel/node"
+    }
+  ],
+  "routes": [
+    {
+      "src": "/(.*)",
+      "dest": "/src/index.html"
+    },
+    {
+      "src": "/(.*)",
+      "dest": "/server/server.js"
+    }
+  ]
+}

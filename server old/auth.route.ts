@@ -1,12 +1,11 @@
-import { Request, Response } from "express";
-import { authenticate } from "./db-data";
+import { Request, Response } from 'express';
+import { authenticate } from './db-data';
 
 export function loginUser(req: Request, res: Response) {
-  console.log("User login attempt ...");
+  console.log('User login attempt ...');
 
   const { email, password } = req.body;
 
-  console.log( email, password );
   const user = authenticate(email, password);
 
   if (user) {
